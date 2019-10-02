@@ -95,3 +95,17 @@ class TEST_SET():
 
     def __len__(self):
         return len(self.data)
+    
+    def download(self):
+        try:
+            download_and_extract_archive(self.url, self.root, filename=self.filename)
+        except Exception as e:
+            print("Interrupted during dataset downloading. "
+                  "Cleaning up...")
+            # Clean up
+            cwd = os.getcwd()
+            rm_path = os.path.join(cwd, self.root, "cifar10-batches-images-test")
+            shutil.rmtree(rm_path)
+            raise e
+
+        print('Files already downloaded and verified')
